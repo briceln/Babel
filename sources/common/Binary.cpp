@@ -11,7 +11,7 @@
 std::string	strToBinary(std::string	s){
 	std::string	value;
 	std::string	retVal;
-	int n = s.length();
+	int n = (int)s.length();
 
 	for (int i = 0; i <= n; i++)
 	{
