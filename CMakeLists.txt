@@ -30,6 +30,7 @@ SET(COMMON_SRCS
         sources/common/Factory.cpp
         sources/common/IObservable.cpp
         sources/common/PrintVector.cpp
+        sources/common/Binary.cpp
         includes/common/Factory.hpp
         includes/common/IObservable.hpp
         includes/common/IObservateur.hpp
