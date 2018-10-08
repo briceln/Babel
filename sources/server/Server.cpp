@@ -8,20 +8,20 @@
 #include <boost/bind.hpp>
 #include "includes/server/Server.hpp"
 
-Server::Server(boost::asio::io_service &ios, short port) : ios(ios),
+Server::Server(boost::asio::io_service &ios, unsigned short port) : ios(ios),
 	acceptor(ios, tcp::endpoint(tcp::v4(), port))
 {
-	std::shared_ptr<Session> session = std::make_shared<Session>(ios);
+	std::shared_ptr<Session> session = std::make_shared<Session>(ios, _participants, _msg);
 	acceptor.async_accept(session->get_socket(),
-			      boost::bind(&Server::handle_accept, this, session,
-					  boost::asio::placeholders::error));
+		boost::bind(&Server::handle_accept, this, session,
+			boost::asio::placeholders::error));
 }
 
 void Server::handle_accept(std::shared_ptr<Session> session, const boost::system::error_code &err)
 {
 	if (!err) {
 		session->start();
-		session = std::make_shared<Session>(ios);
+		session = std::make_shared<Session>(ios, _participants, _msg);
 		acceptor.async_accept(session->get_socket(),
 				      boost::bind(&Server::handle_accept, this,
 						  session,
