@@ -9,6 +9,7 @@
 #include <QNetworkInterface>
 #include <QNetworkDatagram>
 #include <QtCore/QDataStream>
+#include <QtNetwork/QHostInfo>
 #include "includes/common/PrintVector.hpp"
 #include "includes/client/Network/NetworkConfig.hpp"
 #include "includes/client/DecodedSound.hpp"
@@ -19,8 +20,11 @@ Babel::Network::UDPNetwork::UDPNetwork(Babel::IAudio *out) : _output(out)
 	bool error;
 
 	foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
-			if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
 				std::cout << address.toString().toStdString() << std::endl;
+	}
+	QList<QHostAddress> list = QHostInfo::fromName(QHostInfo::localHostName()).addresses();
+	for (int var = 0; var < list.size(); ++var) {
+		qDebug() << list[var];
 	}
 	_socket = new QUdpSocket(this);
 	error   = _socket->bind(Babel::Network::port, QUdpSocket::ShareAddress);

@@ -4,6 +4,7 @@
 ** File description:
 ** Created by asianpw,
 */
+
 #ifndef CPP_BABEL_2018_SETTINGS_HPP
 #define CPP_BABEL_2018_SETTINGS_HPP
 
