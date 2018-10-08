@@ -9,6 +9,7 @@
 #include <iostream>
 #include <boost/algorithm/string.hpp>
 #include "includes/server/Session.hpp"
+#include "includes/common/Binary.hpp"
 
 Session::Session(boost::asio::io_service &ios, std::list<Client> &clients, std::list<std::string> &msg) : socket(ios), participants_list(clients), msg_list(msg)
 {
