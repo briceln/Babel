@@ -2,65 +2,27 @@
 ** EPITECH PROJECT, 2021
 ** CPP_babel_2018
 ** File description:
-** Created by j-f,
+** Created by asianpw,
 */
-
 #ifndef CPP_BABEL_2018_SERVER_HPP
 #define CPP_BABEL_2018_SERVER_HPP
 
-#include <iostream>
 #include <boost/asio.hpp>
-#include <boost/chrono.hpp>
-#include <boost/array.hpp>
-#include <set>
-#include <vector>
-#include <iterator>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/bind.hpp>
-#include <boost/algorithm/string.hpp>
+#include <list>
+#include "Session.hpp"
 #include "Client.hpp"
 
-using namespace boost::chrono;
 using boost::asio::ip::tcp;
 
-// class to make a connection between users
-class Server : public std::enable_shared_from_this<Server>{
-private:
-	tcp::socket		socket_;
-	std::string		message_;
-	Server(boost::asio::io_service& io_service);
-	void		handle(const boost::system::error_code& error);
-	void		handler(const boost::system::error_code& error,
-		std::size_t bytes_transferred);
-
-
-
+class Server {
 public:
-	typedef boost::shared_ptr<Server> pointer;
-	~Server(){};
-	static		pointer create(boost::asio::io_service& ios);
-	void		startServer(std::list<Client>& client_list, std::list<std::string>&);
-	void		getClientData(int, std::list<Client>&, std::list<std::string>&);
-	tcp::socket&	getSocket();
-	std::string	getMessage();
+	Server(boost::asio::io_service &ios, short port);
+	void handle_accept(std::shared_ptr<Session> session, const boost::system::error_code &err);
+private:
+	boost::asio::io_service &ios;
+	tcp::acceptor          acceptor;
+	std::list<Client>      _participants;
+	std::list<std::string> _msg;
 };
 
-
-// Creation af an tcp server
-class Tcp : public Client{
-private:
-	tcp::socket		*tab_socket;
-	std::vector<std::thread*>		threads;
-	std::list<Client>	_participants;
-	std::list<std::string>	_msg;
-	tcp::acceptor		accept_;
-	void			begin_accept();
-	void			check_accept(Server::pointer new_connection,
-		const boost::system::error_code& error);
-
-public:
-	~Tcp(){};
-	Tcp(boost::asio::io_service& io_service, int port);
-};
 #endif //CPP_BABEL_2018_SERVER_HPP

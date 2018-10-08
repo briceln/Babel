@@ -97,12 +97,18 @@ if (MSVC)
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CONAN_PORTAUDIO_ROOT}/bin $<TARGET_FILE_DIR:babel_client>)
 
-endif(MSVC)
+endif (MSVC)
 
 #############################################
 
 SET(SERVER_SRCS
-        sources/server/main.cpp)
+        sources/server/main.cpp
+        sources/server/Client.cpp
+        includes/server/Client.hpp
+        sources/server/Server.cpp
+        includes/server/Server.hpp
+        sources/server/Session.cpp
+        includes/server/Session.hpp)
 
 add_executable(babel_server ${SERVER_SRCS} ${COMMON_SRCS})
 
@@ -116,7 +122,7 @@ if (MSVC)
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CONAN_BIN_DIRS_BOOST_ASIO} $<TARGET_FILE_DIR:babel_server>)
 
-endif(MSVC)
+endif (MSVC)
 
 
 #############################################
