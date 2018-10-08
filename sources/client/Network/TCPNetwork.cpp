@@ -8,6 +8,7 @@
 #include <includes/client/Network/TCPNetwork.hpp>
 #include <QtWidgets/QMessageBox>
 #include <iostream>
+#include "includes/common/Binary.hpp"
 
 TCPNetwork::TCPNetwork(const QString &ip, int port, int timeToWait) : _ip(ip),
 	_port(port), _timeToWait(timeToWait), _socket(new QTcpSocket(this))
@@ -49,19 +50,28 @@ void TCPNetwork::displayError(QAbstractSocket::SocketError socketError)
 
 void TCPNetwork::readData()
 {
+	int	x = 0;
+
 	QString data = _socket->readAll();
-	if (data == "200\n") {
+	QString data2 = QString::fromStdString(binaryToStr(data.toStdString()));
+	while (data2[x] != '\0') {
+		if (data2[x] == '\n')
+			data2.remove(x+1, data2.size());
+		x++;
+	}
+	qDebug() << data2;
+	if (data2.toStdString() == "200\n") {
 		return;
 	}
-	if (data.startsWith("300|")) {
-		data.remove(0, 4);
-		emit dataToRead(data);
+	if (data2.startsWith("300|")) {
+		data2.remove(0, 4);
+		emit dataToRead(data2);
 	}
-	if (data.startsWith("500|")) {
-		data.remove(0, 4);
-		emit incomingCall(data);
+	if (data2.startsWith("500|")) {
+		data2.remove(0, 4);
+		emit incomingCall(data2);
 	}
-	if (data.startsWith("404\n")) {
+	if (data2.startsWith("404\n")) {
 		//other doesn't answer
 	}
 }

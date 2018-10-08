@@ -11,22 +11,11 @@
 std::string	strToBinary(std::string	s){
 	std::string	value;
 	std::string	retVal;
-	int n = s.length();
+	int n = s.length()-1;
 
 	for (int i = 0; i <= n; i++)
 	{
-		int val = int(s[i]);
-		if (isprint(val)) {
-			value = "";
-			while (val > 0)
-			{
-				(val % 2)? value.push_back('1') : value.push_back('0');
-				val /= 2;
-			}
-			value.push_back('0');
-			reverse(value.begin(), value.end());
-			retVal += value;
-		}
+		retVal += std::bitset<8>(s[i]).to_string();
 	}
 	return retVal;
 }

@@ -116,7 +116,7 @@ void Session::handle_read(std::shared_ptr<Session> &s, const boost::system::erro
 						   boost::asio::placeholders::error,
 						   boost::asio::placeholders::bytes_transferred));
 		msg = check_code(data);
-		socket.async_write_some(boost::asio::buffer(msg, max_length),
+		socket.async_write_some(boost::asio::buffer(strToBinary(msg)+'\n', max_length),
 			boost::bind(&Session::handle_write, this,
 				shared_from_this(),
 				boost::asio::placeholders::error,
