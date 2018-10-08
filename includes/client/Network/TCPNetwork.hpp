@@ -25,6 +25,7 @@ private slots:
 
 signals:
 	void dataToRead(QString data);
+	void incomingCall(QString data);
 
 private:
 	const QString &_ip;

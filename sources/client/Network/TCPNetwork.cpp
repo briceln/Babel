@@ -17,11 +17,10 @@ TCPNetwork::TCPNetwork(const QString &ip, int port, int timeToWait) : _ip(ip),
 	connect(_socket, SIGNAL(readyRead()), this, SLOT(readData()));
 	connect(_socket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	_socket->connectToHost(_ip, _port);
+	_socket->connectToHost(_ip, (quint16)_port);
 	if (!_socket->waitForConnected(_timeToWait)) {
 		throw std::runtime_error("The server doesn't respond !");
 	}
-	writeData("1");
 }
 
 void TCPNetwork::displayError(QAbstractSocket::SocketError socketError)
@@ -50,12 +49,22 @@ void TCPNetwork::displayError(QAbstractSocket::SocketError socketError)
 
 void TCPNetwork::readData()
 {
-	qDebug() << "reading...";
 	QString data = _socket->readAll();
+	qDebug() << "reading: " << data;
 	if (data == "200\n") {
 		return;
 	}
-	emit dataToRead(data);
+	if (data.startsWith("300|")) {
+		data.remove(0, 4);
+		emit dataToRead(data);
+	}
+	if (data.startsWith("500|")) {
+		data.remove(0, 4);
+		emit incomingCall(data);
+	}
+	if (data.startsWith("404\n")) {
+		//other doesn't answer
+	}
 }
 
 void TCPNetwork::connected()
@@ -70,10 +79,10 @@ void TCPNetwork::disconnected()
 
 bool TCPNetwork::writeData(const std::string &msg)
 {
-//	_socket->write(std::to_string(msg.size()).append("\n").data());
 	if (_socket->state() != QTcpSocket::ConnectedState) {
 		return false;
 	}
+	std::cout << "Send: " << msg << std::endl;
 	_socket->write((msg + "\n").data());
 	_socket->waitForBytesWritten();
 	return true;

@@ -32,26 +32,29 @@ namespace Babel {
 			void itemDoubleClicked(QListWidgetItem *);
 			void logout();
 			void readData(QString);
+			void whoCall();
+			void takeIncomingCall(QString);
 
 		private:
-			TCPNetwork     *_tcpNetwork;
-			size_t         _width;
-			size_t         _height;
-			QFont          _font;
-			QLabel         *_username;
-			QListWidget    *_listWidget;
-			QPushButton    *_logout;
-			QPushButton    *_call;
-			QPushButton    *_test;
-			QHBoxLayout    *_header;
-			QHBoxLayout    *_buttonLayout;
-			QVBoxLayout    *_layout;
-			QStackedWidget *_stack;
-			QIcon          _icon;
-			std::string    _ip;
-			std::string    _name;
-			QStringList    _contact;
+			TCPNetwork                         *_tcpNetwork;
+			size_t                             _width;
+			size_t                             _height;
+			QFont                              _font;
+			QLabel                             *_username;
+			QListWidget                        *_listWidget;
+			QPushButton                        *_logout;
+			QPushButton                        *_call;
+			QPushButton                        *_test;
+			QHBoxLayout                        *_header;
+			QHBoxLayout                        *_buttonLayout;
+			QVBoxLayout                        *_layout;
+			QStackedWidget                     *_stack;
+			QIcon                              _icon;
+			std::string                        _ip;
+			std::string                        _name;
+			QStringList                        _contact;
 			std::map<std::string, std::string> _contactIp;
+			QTimer                             *_timer;
 		};
 	}
 }
