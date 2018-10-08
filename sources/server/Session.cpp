@@ -76,9 +76,9 @@ std::string Session::check_code(std::string data)
 	}
 	else if (code == 3) {
 		std::string msg;
+		msg = "300";
 		for (it1 = participants_list.begin(); it1 != participants_list.end(); it1++) {
-			if (it1 != participants_list.begin())
-				msg += "|";
+			msg += "|";
 			msg += (*it1).getIp() + ":" + (*it1).getUsername();
 		}
 		msg += "\n";
