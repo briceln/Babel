@@ -22,7 +22,7 @@ Babel::UI::Home::Home(QStackedWidget *stack, TCPNetwork *tcpNetwork)
 	QIcon log(QCoreApplication::applicationDirPath() + "/media/logout.png");
 	_icon         = tmp;
 	_timer        = new QTimer;
-	_username     = new QLabel("Username");
+	_username     = new QLabel("");
 	_listWidget   = new QListWidget;
 	_logout       = new QPushButton;
 	_call         = new QPushButton("Call");
@@ -132,19 +132,23 @@ void Babel::UI::Home::readData(QString data)
 	std::string tmp = data.toStdString();
 
 	tmp.erase(std::remove(tmp.begin(), tmp.end(), '\n'), tmp.end());
-	std::cout << "Parse" << tmp << std::endl;
 	_contact.clear();
 	if (tmp.find('|') != std::string::npos) {
 		std::vector<std::string> users = split(tmp, '|');
 		for (auto &user : users) {
 			std::vector<std::string> info = split(user, ':');
+			if (info[1] == _username->text().toStdString()) {
+				continue;
+			}
 			_contact << QString::fromStdString(info[1]);
 			_contactIp.insert({info[1], info[0]});
 		}
 	} else {
 		std::vector<std::string> info = split(tmp, ':');
-		_contact << QString::fromStdString(info[1]);
-		_contactIp.insert({info[1], info[0]});
+		if (info[1] != _username->text().toStdString()) {
+			_contact << QString::fromStdString(info[1]);
+			_contactIp.insert({info[1], info[0]});
+		}
 	}
 	_listWidget->clear();
 	_listWidget->addItems(_contact);
@@ -156,6 +160,7 @@ void Babel::UI::Home::whoCall()
 		return;
 	}
 	_tcpNetwork->writeData("5|" + _username->text().toStdString());
+	_tcpNetwork->writeData("3|user");
 }
 
 void Babel::UI::Home::takeIncomingCall(QString ip)
@@ -167,4 +172,9 @@ void Babel::UI::Home::takeIncomingCall(QString ip)
 	_ip.erase(std::remove(_ip.begin(), _ip.end(), '\n'), _ip.end());
 	_name = "Incomming...";
 	_stack->setCurrentIndex(2);
+}
+
+QString Babel::UI::Home::getUsername() const
+{
+	return _username->text();
 }
