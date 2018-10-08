@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <includes/client/UI/Login.hpp>
+#include <portaudio.h>
 
 #include "includes/client/UI/Login.hpp"
 

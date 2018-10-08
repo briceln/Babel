@@ -102,13 +102,11 @@ endif(MSVC)
 #############################################
 
 SET(SERVER_SRCS
-        sources/server/main.cpp
-        sources/server/Server.cpp
-        sources/server/Client.cpp)
+        sources/server/main.cpp)
 
 add_executable(babel_server ${SERVER_SRCS} ${COMMON_SRCS})
 
-target_include_directories(babel_server PRIVATE includes/server)
+#target_include_directories(babel_server PRIVATE includes/server)
 
 target_link_libraries(babel_server ${CONAN_LIBS} ${CMAKE_THREAD_LIBS_INIT})
 

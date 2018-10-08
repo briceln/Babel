@@ -7,6 +7,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <includes/client/UI/Home.hpp>
+#include <sstream>
 
 #include "includes/client/UI/Home.hpp"
 
@@ -51,25 +52,40 @@ Babel::UI::Home::Home(QStackedWidget *stack, TCPNetwork *tcpNetwork)
 	connect(_listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem * )),
 		this, SLOT(itemDoubleClicked(QListWidgetItem * )));
 	connect(_logout, SIGNAL(clicked()), this, SLOT(logout()));
+	connect(_tcpNetwork, SIGNAL(dataToRead(QString)), this,
+		SLOT(readData(QString)));
+	_listWidget->addItems(_contact);
+//	QStringList contact = {"Freddy Armstrong", "Lacie-Mae Davies",
+//		"Essa Dunne", "Aden Grimes", "Ansh Dillon", "Kingston Donnelly",
+//		"Helen Gregory", "Jude Pugh", "Iram Park", "Gregg Naylor",
+//		"Kaylem Callaghan", "Cormac Mckay", "Jordan-Lee Mcgee",
+//		"Leo Andersen", "Jordon Horn", "Nazifa Horne", "Fredrick Ward",
+//		"Leia Sweet", "Carrie Stephens", "Nafeesa Plummer",
+//		"Liya Russell", "Vivek Clark", "Traci Halliday", "Myla Phan",
+//		"Terrell Bone", "Reece Valenzuela", "Luciano Hilton",
+//		"Ralph Everett", "Cem Doherty", "Alessandra Abbott",
+//		"Lola-Rose Kerr", "Zi Hendrix", "Lillie Fuentes",
+//		"Theon Ratcliffe", "Astrid Jeffery", "Addie Kaye",
+//		"Emma-Louise William", "Alisha Parsons", "Luqman Hays",
+//		"Jamelia Schwartz", "Louis Bloggs", "Jakub Enriquez",
+//		"Nate Acosta", "Pauline Parkes", "Zuzanna Heath", "Zoey Ryan",
+//		"Nicole Bevan", "Ivo Orozco", "Asiya King", "Kornelia Carson"};
+//	_listWidget->addItems(contact);
+//	_font.setPointSize(15);
+//	_listWidget->setFont(_font);
+}
 
-	QStringList contact = {"Freddy Armstrong", "Lacie-Mae Davies",
-		"Essa Dunne", "Aden Grimes", "Ansh Dillon", "Kingston Donnelly",
-		"Helen Gregory", "Jude Pugh", "Iram Park", "Gregg Naylor",
-		"Kaylem Callaghan", "Cormac Mckay", "Jordan-Lee Mcgee",
-		"Leo Andersen", "Jordon Horn", "Nazifa Horne", "Fredrick Ward",
-		"Leia Sweet", "Carrie Stephens", "Nafeesa Plummer",
-		"Liya Russell", "Vivek Clark", "Traci Halliday", "Myla Phan",
-		"Terrell Bone", "Reece Valenzuela", "Luciano Hilton",
-		"Ralph Everett", "Cem Doherty", "Alessandra Abbott",
-		"Lola-Rose Kerr", "Zi Hendrix", "Lillie Fuentes",
-		"Theon Ratcliffe", "Astrid Jeffery", "Addie Kaye",
-		"Emma-Louise William", "Alisha Parsons", "Luqman Hays",
-		"Jamelia Schwartz", "Louis Bloggs", "Jakub Enriquez",
-		"Nate Acosta", "Pauline Parkes", "Zuzanna Heath", "Zoey Ryan",
-		"Nicole Bevan", "Ivo Orozco", "Asiya King", "Kornelia Carson"};
-	_listWidget->addItems(contact);
-	_font.setPointSize(15);
-	_listWidget->setFont(_font);
+
+std::vector<std::string> split(const std::string& s, char delimiter)
+{
+	std::vector<std::string> tokens;
+	std::string token;
+	std::istringstream tokenStream(s);
+	while (std::getline(tokenStream, token, delimiter))
+	{
+		tokens.push_back(token);
+	}
+	return tokens;
 }
 
 void Babel::UI::Home::makeCall()
@@ -116,4 +132,23 @@ void Babel::UI::Home::logout()
 {
 	_tcpNetwork->writeData("1|" + _username->text().toStdString());
 	_stack->setCurrentIndex(0);
+}
+
+void Babel::UI::Home::readData(QString data)
+{
+	qDebug() << data;
+	_contact.clear();
+	if (data.toStdString().find('|') != std::string::npos) {
+		std::vector<std::string> users = split(data.toStdString(), '|');
+		for (auto user : users) {
+			std::vector<std::string> infos = split(user, ':');
+			_contact << QString::fromStdString(infos[1]);
+		}
+	} else {
+		std::vector<std::string> users = split(data.toStdString(), '|');
+		for (auto user : users) {
+			std::vector<std::string> infos = split(user, ':');
+			_contact << QString::fromStdString(infos[1]);
+		}
+	}
 }

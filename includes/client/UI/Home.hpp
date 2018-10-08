@@ -31,6 +31,7 @@ namespace Babel {
 			void changeButtonName(QString const &currentText);
 			void itemDoubleClicked(QListWidgetItem *);
 			void logout();
+			void readData(QString);
 
 		private:
 			TCPNetwork     *_tcpNetwork;
@@ -49,6 +50,8 @@ namespace Babel {
 			QIcon          _icon;
 			std::string    _ip;
 			std::string    _name;
+			QStringList    _contact;
+			std::map<std::string, std::string> _contactIp;
 		};
 	}
 }
