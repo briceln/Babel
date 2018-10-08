@@ -1,0 +1,91 @@
+[settings]
+    arch=x86_64
+    build_type=Release
+    compiler=Visual Studio
+    compiler.runtime=MD
+    compiler.version=15
+    os=Windows
+
+[requires]
+    Qt/5.Y.Z
+    boost_asio/1.Y.Z
+    opus/1.Y.Z
+    portaudio/v190600.20161030
+
+[options]
+
+
+[full_settings]
+    arch=x86_64
+    arch_build=x86_64
+    build_type=Release
+    compiler=Visual Studio
+    compiler.runtime=MD
+    compiler.version=15
+    os=Windows
+    os_build=Windows
+
+[full_requires]
+    Qt/5.11.2@bincrafters/stable:a5917dd09ca4b110e87a2f48672f37ccb57bf48a
+    boost_asio/1.66.0@bincrafters/stable:5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9
+    opus/1.2.1@bincrafters/stable:6cc50b139b9c3d27b3e9042d5f5372d327b3a9f7
+    portaudio/v190600.20161030@bincrafters/stable:6cc50b139b9c3d27b3e9042d5f5372d327b3a9f7
+
+[full_options]
+    Qt:GUI=True
+    Qt:commercial=False
+    Qt:config=None
+    Qt:opengl=desktop
+    Qt:openssl=False
+    Qt:qt3d=False
+    Qt:qtactiveqt=False
+    Qt:qtandroidextras=False
+    Qt:qtbase=True
+    Qt:qtcanvas3d=False
+    Qt:qtcharts=False
+    Qt:qtconnectivity=False
+    Qt:qtdatavis3d=False
+    Qt:qtdeclarative=False
+    Qt:qtdoc=False
+    Qt:qtgamepad=False
+    Qt:qtgraphicaleffects=False
+    Qt:qtimageformats=False
+    Qt:qtlocation=False
+    Qt:qtmacextras=False
+    Qt:qtmultimedia=False
+    Qt:qtnetworkauth=False
+    Qt:qtpurchasing=False
+    Qt:qtqa=False
+    Qt:qtquickcontrols=False
+    Qt:qtquickcontrols2=False
+    Qt:qtremoteobjects=False
+    Qt:qtrepotools=False
+    Qt:qtscript=False
+    Qt:qtscxml=False
+    Qt:qtsensors=False
+    Qt:qtserialbus=False
+    Qt:qtserialport=False
+    Qt:qtspeech=False
+    Qt:qtsvg=False
+    Qt:qttools=False
+    Qt:qttranslations=False
+    Qt:qtvirtualkeyboard=False
+    Qt:qtwayland=False
+    Qt:qtwebchannel=False
+    Qt:qtwebengine=False
+    Qt:qtwebglplugin=False
+    Qt:qtwebsockets=False
+    Qt:qtwebview=False
+    Qt:qtwinextras=False
+    Qt:qtx11extras=False
+    Qt:qtxmlpatterns=False
+    Qt:shared=True
+    Qt:widgets=True
+    opus:shared=False
+    portaudio:shared=False
+
+[recipe_hash]
+
+
+[env]
+

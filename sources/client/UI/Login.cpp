@@ -19,7 +19,7 @@ Babel::UI::Login::Login(QStackedWidget *stack, TCPNetwork *tcpNetwork)
 	_form         = new QFormLayout();
 	_layout       = new QVBoxLayout();
 	_buttonLayout = new QHBoxLayout();
-	setFixedSize(_width, _height);
+	setFixedSize((int)_width, (int)_height);
 	setWindowTitle("Skipe");
 	_form->addRow("Username:", _id);
 	_form->setSpacing(20);

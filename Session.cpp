@@ -40,6 +40,9 @@ std::string Session::check_code(std::string data)
 	bool				find = false;
 
 	ip = socket.remote_endpoint().address().to_string();
+	if (data.empty()) {
+		return "0\n";
+	}
 	boost::algorithm::split(tokens, data, boost::is_any_of("|"));
 	code = std::stoi(tokens[0]);
 	user = tokens[1].erase(tokens[1].length()-1);
