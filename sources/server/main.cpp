@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include "includes/server/Server.hpp"
-#include "includes/common/Binary.hpp"
 
 int main(int ac, char **argv)
 {
