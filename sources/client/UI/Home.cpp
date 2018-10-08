@@ -6,9 +6,7 @@
 */
 
 #include <QtCore/QCoreApplication>
-#include <includes/client/UI/Home.hpp>
 #include <sstream>
-
 #include "includes/client/UI/Home.hpp"
 
 Babel::UI::Home::Home(QStackedWidget *stack, TCPNetwork *tcpNetwork)
@@ -75,14 +73,12 @@ Babel::UI::Home::Home(QStackedWidget *stack, TCPNetwork *tcpNetwork)
 //	_listWidget->setFont(_font);
 }
 
-
-std::vector<std::string> split(const std::string& s, char delimiter)
+std::vector<std::string> split(const std::string &s, char delimiter)
 {
 	std::vector<std::string> tokens;
-	std::string token;
-	std::istringstream tokenStream(s);
-	while (std::getline(tokenStream, token, delimiter))
-	{
+	std::string              token;
+	std::istringstream       tokenStream(s);
+	while (std::getline(tokenStream, token, delimiter)) {
 		tokens.push_back(token);
 	}
 	return tokens;
@@ -90,8 +86,17 @@ std::vector<std::string> split(const std::string& s, char delimiter)
 
 void Babel::UI::Home::makeCall()
 {
-	_ip   = "127.0.0.1";// take ip from
+	std::map<std::string, std::string>::iterator iterator;
+
+	if (_contact.isEmpty()) {
+		return;
+	}
 	_name = _listWidget->currentItem()->text().toStdString();
+	iterator = _contactIp.find(_name);
+	if (iterator == _contactIp.end()) {
+		return;
+	}
+	_ip   = (*iterator).second;
 	_stack->setCurrentIndex(2);
 }
 
@@ -140,15 +145,14 @@ void Babel::UI::Home::readData(QString data)
 	_contact.clear();
 	if (data.toStdString().find('|') != std::string::npos) {
 		std::vector<std::string> users = split(data.toStdString(), '|');
-		for (auto user : users) {
-			std::vector<std::string> infos = split(user, ':');
-			_contact << QString::fromStdString(infos[1]);
+		for (auto &user : users) {
+			std::vector<std::string> info = split(user, ':');
+			_contact << QString::fromStdString(info[1]);
+			_contactIp.insert({info[1], info[0]});
 		}
 	} else {
-		std::vector<std::string> users = split(data.toStdString(), '|');
-		for (auto user : users) {
-			std::vector<std::string> infos = split(user, ':');
-			_contact << QString::fromStdString(infos[1]);
-		}
+		std::vector<std::string> info = split(data.toStdString(), ':');
+		_contact << QString::fromStdString(info[1]);
+		_contactIp.insert({info[1], info[0]});
 	}
 }
