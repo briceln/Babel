@@ -6,9 +6,11 @@
 */
 
 #include <iostream>
+#include <includes/client/Core.hpp>
+
 #include "includes/client/Core.hpp"
 
-Core::Core(Settings const &settings) : QWidget()
+Core::Core(Settings const &settings)
 {
 	if (!settings.isContinue())
 		throw std::invalid_argument("");
@@ -21,8 +23,8 @@ Core::Core(Settings const &settings) : QWidget()
 	_stackedWidget->addWidget(_homeScreen);
 	_stackedWidget->addWidget(_callScreen);
 	_stackedWidget->show();
-	QObject::connect(_stackedWidget, SIGNAL(currentChanged(int)), this,
-			 SLOT(checkForCall(int)));
+	QObject::connect(_stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(checkForCall(int)));
+
 }
 
 void Core::checkForCall(int index)
@@ -38,4 +40,13 @@ void Core::checkForCall(int index)
 		reinterpret_cast<Babel::UI::Home *>(_homeScreen)->setUsername(tmpLogin->getUsername());
 		_tcpNetwork->writeData("3|user");
 	}
+}
+
+Core::~Core()
+{
+	auto home = reinterpret_cast<Babel::UI::Home *>(_homeScreen);
+	if (!home->getUsername().toStdString().empty())
+		_tcpNetwork->writeData("1|" + home->getUsername().toStdString());
+	delete _tcpNetwork;
+	delete _stackedWidget;
 }

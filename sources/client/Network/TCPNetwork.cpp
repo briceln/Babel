@@ -50,7 +50,6 @@ void TCPNetwork::displayError(QAbstractSocket::SocketError socketError)
 void TCPNetwork::readData()
 {
 	QString data = _socket->readAll();
-	qDebug() << "reading: " << data;
 	if (data == "200\n") {
 		return;
 	}
@@ -69,12 +68,10 @@ void TCPNetwork::readData()
 
 void TCPNetwork::connected()
 {
-	qDebug() << "connected...";
 }
 
 void TCPNetwork::disconnected()
 {
-	qDebug() << "disconnected...";
 }
 
 bool TCPNetwork::writeData(const std::string &msg)
@@ -82,7 +79,6 @@ bool TCPNetwork::writeData(const std::string &msg)
 	if (_socket->state() != QTcpSocket::ConnectedState) {
 		return false;
 	}
-	std::cout << "Send: " << msg << std::endl;
 	_socket->write((msg + "\n").data());
 	_socket->waitForBytesWritten();
 	return true;

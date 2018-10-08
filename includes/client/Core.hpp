@@ -15,10 +15,11 @@
 #include "includes/client/UI/Call.hpp"
 #include "includes/client/Settings.hpp"
 
-class Core : public QWidget {
+class Core : public QMainWindow {
 Q_OBJECT
 public:
 	Core(Settings const &settings);
+	~Core();
 
 public slots:
 	void checkForCall(int);

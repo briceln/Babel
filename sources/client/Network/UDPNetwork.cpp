@@ -18,14 +18,10 @@ Babel::Network::UDPNetwork::UDPNetwork(Babel::IAudio *out) : _output(out)
 {
 	bool error;
 
-		foreach (const QHostAddress &address,
-			 QNetworkInterface::allAddresses()) {
-			if (address.protocol() ==
-				QAbstractSocket::IPv4Protocol && address !=
-				QHostAddress(QHostAddress::LocalHost))
-				std::cout << address.toString().toStdString()
-					<< std::endl;
-		}
+	foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
+			if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
+				std::cout << address.toString().toStdString() << std::endl;
+	}
 	_socket = new QUdpSocket(this);
 	error   = _socket->bind(Babel::Network::port, QUdpSocket::ShareAddress);
 	if (!error) {
@@ -44,10 +40,7 @@ void Babel::Network::UDPNetwork::readDatagram()
 		quint16      senderPort;
 
 		buffer.resize((int)_socket->pendingDatagramSize());
-		_socket->readDatagram(buffer.data(), buffer.size(), &sender,
-				      &senderPort);
-//		std::cout << "Message receive from: " << sender.toString().toStdString() << std::endl;
-//		std::cout << buffer.data() << std::endl;
+		_socket->readDatagram(buffer.data(), buffer.size(), &sender, &senderPort);
 		QVector<float> data;
 		QDataStream    stream(buffer);
 		stream >> data;
@@ -63,9 +56,6 @@ void Babel::Network::UDPNetwork::sendDatagram(const DecodedSound &sound)
 	QVector<float> tmp = QVector<float>::fromStdVector(sound.buffer);
 	QDataStream    stream(&buffer, QIODevice::WriteOnly);
 	stream << tmp;
-//	std::cout << "First: " << sound.buffer << std::endl;
-//	QNetworkDatagram	datagram(buffer, QHostAddress::LocalHost, (qint16)Babel::Network::port);
-//	datagram.setDestination(_host, Babel::Network::port);
 	_socket->writeDatagram(buffer, buffer.size(), _host, Babel::Network::port);
 }
 

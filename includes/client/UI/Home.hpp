@@ -24,6 +24,7 @@ namespace Babel {
 			const std::string &getIp() const;
 			const std::string &getName() const;
 			void setUsername(QString &username);
+			QString getUsername() const;
 
 		private slots:
 			void makeCall();
