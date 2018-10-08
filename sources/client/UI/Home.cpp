@@ -91,12 +91,12 @@ void Babel::UI::Home::makeCall()
 	if (_contact.isEmpty()) {
 		return;
 	}
-	_name = _listWidget->currentItem()->text().toStdString();
+	_name    = _listWidget->currentItem()->text().toStdString();
 	iterator = _contactIp.find(_name);
 	if (iterator == _contactIp.end()) {
 		return;
 	}
-	_ip   = (*iterator).second;
+	_ip = (*iterator).second;
 	_stack->setCurrentIndex(2);
 }
 
@@ -145,7 +145,7 @@ void Babel::UI::Home::readData(QString data)
 	_contact.clear();
 	if (data.toStdString().find('|') != std::string::npos) {
 		std::vector<std::string> users = split(data.toStdString(), '|');
-		for (auto &user : users) {
+		for (auto                &user : users) {
 			std::vector<std::string> info = split(user, ':');
 			_contact << QString::fromStdString(info[1]);
 			_contactIp.insert({info[1], info[0]});
