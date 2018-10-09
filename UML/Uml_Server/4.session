@@ -1,0 +1,13 @@
+window_sizes 1853 1025 434 1413 852 120
+cleanlooks_style
+diagrams
+  active  classdiagram_ref 128004 // Server
+    1413 852 100 A4 0 0
+end
+show_stereotypes
+selected class_ref 128132 // server
+open
+  class_ref 128132 // server
+  class_ref 128260 // Client
+end
+end

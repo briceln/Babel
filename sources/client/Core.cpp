@@ -5,9 +5,12 @@
 ** Created by asianpw,
 */
 
+#include <iostream>
+#include <includes/client/Core.hpp>
+
 #include "includes/client/Core.hpp"
 
-Core::Core(Settings const &settings) : QWidget()
+Core::Core(Settings const &settings)
 {
 	if (!settings.isContinue())
 		throw std::invalid_argument("");
@@ -20,13 +23,13 @@ Core::Core(Settings const &settings) : QWidget()
 	_stackedWidget->addWidget(_homeScreen);
 	_stackedWidget->addWidget(_callScreen);
 	_stackedWidget->show();
-	QObject::connect(_stackedWidget, SIGNAL(currentChanged(int)), this,
-			 SLOT(checkForCall(int)));
+	QObject::connect(_stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(checkForCall(int)));
+
 }
 
 void Core::checkForCall(int index)
 {
-	Babel::UI::Home *tmpHome;
+	Babel::UI::Home  *tmpHome;
 	Babel::UI::Login *tmpLogin;
 
 	if (index == _stackedWidget->indexOf(_callScreen)) {
@@ -35,5 +38,15 @@ void Core::checkForCall(int index)
 	} else if (index == _stackedWidget->indexOf(_homeScreen)) {
 		tmpLogin = reinterpret_cast<Babel::UI::Login *>(_stackedWidget->widget(_stackedWidget->indexOf(_loginScreen)));
 		reinterpret_cast<Babel::UI::Home *>(_homeScreen)->setUsername(tmpLogin->getUsername());
+		_tcpNetwork->writeData("3|user");
 	}
+}
+
+Core::~Core()
+{
+	auto home = reinterpret_cast<Babel::UI::Home *>(_homeScreen);
+	if (!home->getUsername().toStdString().empty())
+		_tcpNetwork->writeData("1|" + home->getUsername().toStdString());
+	delete _tcpNetwork;
+	delete _stackedWidget;
 }

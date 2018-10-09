@@ -39,6 +39,7 @@ int main(int ac, char *av[])
 		_app.setStyleSheet(styleSheet);
 		_app.exec();
 	} catch (const std::invalid_argument &invalidArgument) {
+		(void)invalidArgument;
 		return settings.getReturnCode();
 	} catch (const std::runtime_error &runtimeError) {
 		std::cerr << "A runtime error occur:" << std::endl << "\t"

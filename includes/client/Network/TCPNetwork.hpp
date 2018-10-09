@@ -23,6 +23,10 @@ private slots:
 	void connected();
 	void disconnected();
 
+signals:
+	void dataToRead(QString data);
+	void incomingCall(QString data);
+
 private:
 	const QString &_ip;
 	int           _port;

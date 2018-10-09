@@ -8,6 +8,7 @@
 #include <includes/client/Network/TCPNetwork.hpp>
 #include <QtWidgets/QMessageBox>
 #include <iostream>
+#include "includes/common/Binary.hpp"
 
 TCPNetwork::TCPNetwork(const QString &ip, int port, int timeToWait) : _ip(ip),
 	_port(port), _timeToWait(timeToWait), _socket(new QTcpSocket(this))
@@ -17,7 +18,7 @@ TCPNetwork::TCPNetwork(const QString &ip, int port, int timeToWait) : _ip(ip),
 	connect(_socket, SIGNAL(readyRead()), this, SLOT(readData()));
 	connect(_socket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	_socket->connectToHost(_ip, _port);
+	_socket->connectToHost(_ip, (quint16)_port);
 	if (!_socket->waitForConnected(_timeToWait)) {
 		throw std::runtime_error("The server doesn't respond !");
 	}
@@ -49,18 +50,38 @@ void TCPNetwork::displayError(QAbstractSocket::SocketError socketError)
 
 void TCPNetwork::readData()
 {
-	qDebug() << "reading...";
-	qDebug() << _socket->readAll();
+	int	x = 0;
+
+	QString data = _socket->readAll();
+	QString data2 = QString::fromStdString(binaryToStr(data.toStdString()));
+	while (data2[x] != '\0') {
+		if (data2[x] == '\n')
+			data2.remove(x+1, data2.size());
+		x++;
+	}
+	qDebug() << data2;
+	if (data2.toStdString() == "200\n") {
+		return;
+	}
+	if (data2.startsWith("300|")) {
+		data2.remove(0, 4);
+		emit dataToRead(data2);
+	}
+	if (data2.startsWith("500|")) {
+		data2.remove(0, 4);
+		emit incomingCall(data2);
+	}
+	if (data2.startsWith("404\n")) {
+		//other doesn't answer
+	}
 }
 
 void TCPNetwork::connected()
 {
-	qDebug() << "connected...";
 }
 
 void TCPNetwork::disconnected()
 {
-	qDebug() << "disconnected...";
 }
 
 bool TCPNetwork::writeData(const std::string &msg)
@@ -68,7 +89,7 @@ bool TCPNetwork::writeData(const std::string &msg)
 	if (_socket->state() != QTcpSocket::ConnectedState) {
 		return false;
 	}
-	_socket->write(std::to_string(msg.size()).append("\n").data());
-	_socket->write((msg + "\n").data());
+	_socket->write(strToBinary((msg + "\n")).data());
+	_socket->waitForBytesWritten();
 	return true;
 }

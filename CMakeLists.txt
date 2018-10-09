@@ -10,13 +10,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-if (MSVC)
-    if (CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-        string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    else ()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-    endif ()
-elseif (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 endif ()
 
@@ -30,6 +24,7 @@ SET(COMMON_SRCS
         sources/common/Factory.cpp
         sources/common/IObservable.cpp
         sources/common/PrintVector.cpp
+        sources/common/Binary.cpp
         includes/common/Factory.hpp
         includes/common/IObservable.hpp
         includes/common/IObservateur.hpp
@@ -97,18 +92,22 @@ if (MSVC)
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CONAN_PORTAUDIO_ROOT}/bin $<TARGET_FILE_DIR:babel_client>)
 
-endif(MSVC)
+endif (MSVC)
 
 #############################################
 
 SET(SERVER_SRCS
         sources/server/main.cpp
+        sources/server/Client.cpp
+        includes/server/Client.hpp
         sources/server/Server.cpp
-        sources/server/Client.cpp)
+        includes/server/Server.hpp
+        sources/server/Session.cpp
+        includes/server/Session.hpp)
 
 add_executable(babel_server ${SERVER_SRCS} ${COMMON_SRCS})
 
-target_include_directories(babel_server PRIVATE includes/server)
+#target_include_directories(babel_server PRIVATE includes/server)
 
 target_link_libraries(babel_server ${CONAN_LIBS} ${CMAKE_THREAD_LIBS_INIT})
 
@@ -118,7 +117,7 @@ if (MSVC)
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CONAN_BIN_DIRS_BOOST_ASIO} $<TARGET_FILE_DIR:babel_server>)
 
-endif(MSVC)
+endif (MSVC)
 
 
 #############################################

@@ -12,9 +12,9 @@ cmake-build-*
 cmake-build-release-visual-studio/
 
 # conan build file
-conanbuildinfo.cmake
+cmake-build-debug/conanbuildinfo.cmake
 conanbuildinfo.txt
-conaninfo.txt
+cmake-build-debug/conaninfo.txt
 
 
 # Created by https://www.gitignore.io/api/c++

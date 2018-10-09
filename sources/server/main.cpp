@@ -5,10 +5,10 @@
 ** Created by asianpw,
 */
 
-#include "Server.hpp"
+#include <iostream>
+#include "includes/server/Server.hpp"
 
-
-int	main(int ac, char **argv)
+int main(int ac, char **argv)
 {
 	int	port;
 
@@ -22,16 +22,12 @@ int	main(int ac, char **argv)
 		std::cerr << "Bad port value" << std::endl;
 		return (84);
 	}
-	try
-	{
-		boost::asio::io_service io_service;
-		Tcp server(io_service, port);
-		io_service.run();
-	}
-	catch (std::exception& e)
-	{
+	try {
+		boost::asio::io_service ios;
+		Server s(ios, port);
+		ios.run();
+	} catch(std::exception& e) {
 		std::cerr << e.what() << std::endl;
 	}
-
 	return 0;
 }

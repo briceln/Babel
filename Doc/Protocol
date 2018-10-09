@@ -1,0 +1,17 @@
+HOW IT WORKS
+
+Client send:
+
+0|<username> for connection
+1|<username> for disconnect
+2|<user to call> for call user
+3|<username> for get the list of connected persons
+5|<username> for check if someone call me
+
+Server send:
+
+500|<ip> for say call this ip (It's receive when you call someone or you be called)
+300|<contact:ip|contact:ip|etc> the list of people who are connected and their ip
+404 the people you want to call isn't online or doesn't exist
+
+All this messages are converted in binary and be decoded on the server and the client after reception
