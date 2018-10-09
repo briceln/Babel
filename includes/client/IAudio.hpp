@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2021
+** CPP_babel_2018
+** File description:
+** Created by asianpw,
+*/
+
 #ifndef BABEL_IAUDIO_H
 #define BABEL_IAUDIO_H
 
