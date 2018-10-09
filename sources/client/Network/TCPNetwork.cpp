@@ -89,7 +89,7 @@ bool TCPNetwork::writeData(const std::string &msg)
 	if (_socket->state() != QTcpSocket::ConnectedState) {
 		return false;
 	}
-	_socket->write((msg + "\n").data());
+	_socket->write(strToBinary((msg + "\n")).data());
 	_socket->waitForBytesWritten();
 	return true;
 }

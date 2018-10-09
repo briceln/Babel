@@ -43,12 +43,14 @@ std::string Session::check_code(std::string data)
 	if (data.empty()) {
 		return "0\n";
 	}
+	data = binaryToStr(data);
 	boost::algorithm::split(tokens, data, boost::is_any_of("|"));
 	code = std::stoi(tokens[0]);
 	user = tokens[1].erase(tokens[1].length()-1);
 	if (code == 0) {
 		Client new_client(ip, user, true);
 		participants_list.emplace_back(new_client);
+		std::cout << user << " Join the server" << std::endl;
 		return ("200\n");
 	}
 	else if (code == 1) {
