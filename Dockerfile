@@ -22,7 +22,10 @@ RUN apt-get -y install \
   libasound2-dev
 RUN apt-get -y autoremove
 
+RUN apt-get -y install python-pip python-dev && pip install --upgrade pip
+
 RUN pip install pyopenssl ndg-httpsclient pyasn1
+RUN pip install urllib3[secure] --upgrade
 
 CMD /bin/bash
 
