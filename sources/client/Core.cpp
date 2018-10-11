@@ -29,24 +29,18 @@ Core::Core(Settings const &settings)
 
 void Core::checkForCall(int index)
 {
-	Babel::UI::Home  *tmpHome;
-	Babel::UI::Login *tmpLogin;
-
 	if (index == _stackedWidget->indexOf(_callScreen)) {
-		tmpHome = reinterpret_cast<Babel::UI::Home *>(_stackedWidget->widget(_stackedWidget->indexOf(_homeScreen)));
-		reinterpret_cast<Babel::UI::Call *>(_callScreen)->makeCall(tmpHome->getIp(), tmpHome->getName());
+		_callScreen->makeCall(_homeScreen->getIp(), _homeScreen->getName());
 	} else if (index == _stackedWidget->indexOf(_homeScreen)) {
-		tmpLogin = reinterpret_cast<Babel::UI::Login *>(_stackedWidget->widget(_stackedWidget->indexOf(_loginScreen)));
-		reinterpret_cast<Babel::UI::Home *>(_homeScreen)->setUsername(tmpLogin->getUsername());
+		_homeScreen->setUsername(_loginScreen->getUsername());
 		_tcpNetwork->writeData("3|user");
 	}
 }
 
 Core::~Core()
 {
-	auto home = reinterpret_cast<Babel::UI::Home *>(_homeScreen);
-	if (!home->getUsername().toStdString().empty())
-		_tcpNetwork->writeData("1|" + home->getUsername().toStdString());
+	if (!_homeScreen->getUsername().toStdString().empty())
+		_tcpNetwork->writeData("1|" + _homeScreen->getUsername().toStdString());
 	delete _tcpNetwork;
 	delete _stackedWidget;
 }

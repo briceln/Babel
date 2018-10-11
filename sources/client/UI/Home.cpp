@@ -8,8 +8,6 @@
 #include <QtCore/QCoreApplication>
 #include <sstream>
 #include <iostream>
-#include <includes/client/UI/Home.hpp>
-
 #include "includes/client/UI/Home.hpp"
 #include "includes/common/PrintVector.hpp"
 

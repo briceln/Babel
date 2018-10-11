@@ -11,7 +11,11 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
-#include "includes/client/Core.hpp"
+#include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QListWidgetItem>
+#include <QtWidgets/QLabel>
+#include <QTimer>
+#include "includes/client/Network/TCPNetwork.hpp"
 
 namespace Babel {
 

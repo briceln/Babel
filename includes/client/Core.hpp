@@ -25,11 +25,11 @@ public slots:
 	void checkForCall(int);
 
 private:
-	QStackedWidget *_stackedWidget;
-	QWidget        *_loginScreen;
-	QWidget        *_homeScreen;
-	QWidget        *_callScreen;
-	TCPNetwork     *_tcpNetwork;
+	QStackedWidget   *_stackedWidget;
+	Babel::UI::Login *_loginScreen;
+	Babel::UI::Home  *_homeScreen;
+	Babel::UI::Call  *_callScreen;
+	TCPNetwork       *_tcpNetwork;
 };
 
 #endif //CPP_BABEL_2018_CORE_HPP
