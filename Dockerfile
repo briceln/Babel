@@ -2,7 +2,8 @@ FROM         ubuntu:latest
 MAINTAINER   Brice Lang-Nguyen <brice.lang-nguyen@epitech.eu>
 
 # Required system packages
-RUN apt-get update && apt-get -y install \
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get -y install \
   apt-utils \
   build-essential \
   curl \
@@ -19,6 +20,9 @@ RUN apt-get update && apt-get -y install \
   libgl1-mesa-dev \
   libx11-6 \
   libasound2-dev
+RUN apt-get -y autoremove
+
+RUN pip install pyopenssl ndg-httpsclient pyasn1
 
 CMD /bin/bash
 
