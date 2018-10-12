@@ -6,25 +6,22 @@
 */
 
 #include <iostream>
-#include <includes/client/Core.hpp>
-
 #include "includes/client/Core.hpp"
 
-Core::Core(Settings const &settings)
+Core::Core(Settings const &settings) :
+	_tcpNetwork(new TCPNetwork(QString::fromStdString(settings.getIp()), std::stoi(settings.getPort())))
 {
 	if (!settings.isContinue())
 		throw std::invalid_argument("");
-	_tcpNetwork    = new TCPNetwork(QString::fromStdString(settings.getIp()), std::stoi(settings.getPort()));
 	_stackedWidget = new QStackedWidget();
-	_loginScreen   = new Babel::UI::Login(_stackedWidget, _tcpNetwork);
-	_homeScreen    = new Babel::UI::Home(_stackedWidget, _tcpNetwork);
-	_callScreen    = new Babel::UI::Call(_stackedWidget);
+	_loginScreen   = new Login(_stackedWidget, _tcpNetwork.get());
+	_homeScreen    = new Home(_stackedWidget, _tcpNetwork.get());
+	_callScreen    = new Call(_stackedWidget);
 	_stackedWidget->addWidget(_loginScreen);
 	_stackedWidget->addWidget(_homeScreen);
 	_stackedWidget->addWidget(_callScreen);
 	_stackedWidget->show();
 	QObject::connect(_stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(checkForCall(int)));
-
 }
 
 void Core::checkForCall(int index)
@@ -41,6 +38,4 @@ Core::~Core()
 {
 	if (!_homeScreen->getUsername().toStdString().empty())
 		_tcpNetwork->writeData("1|" + _homeScreen->getUsername().toStdString());
-	delete _tcpNetwork;
-	delete _stackedWidget;
 }

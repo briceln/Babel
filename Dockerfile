@@ -22,7 +22,7 @@ RUN apt-get -y install \
   libasound2-dev
 RUN apt-get -y autoremove
 
-RUN apt-get -y install python-pip python-dev && pip install --upgrade pip
+RUN apt-get -y install python3-dev python3-pip && pip install --upgrade pip
 
 RUN pip install pyopenssl ndg-httpsclient pyasn1
 RUN pip install urllib3[secure] --upgrade
@@ -36,9 +36,8 @@ RUN wget -q -O /tmp/cmake.tar.gz --no-check-certificate \
   rm /tmp/cmake.tar.gz
 
 # Install conan
-RUN curl -C - -L -O https://dl.bintray.com/conan/installers/conan-ubuntu-64_1_7_3.deb && dpkg -i conan-ubuntu-64_1_7_3.deb && conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" && rm conan-ubuntu-64_1_7_3.deb
-
-
+RUN pip install conan && conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
+# RUN curl -C - -L -O https://dl.bintray.com/conan/installers/conan-ubuntu-64_1_7_3.deb && dpkg -i conan-ubuntu-64_1_7_3.deb && conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" && rm conan-ubuntu-64_1_7_3.deb
 
 WORKDIR /build
 

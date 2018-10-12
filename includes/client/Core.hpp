@@ -9,27 +9,31 @@
 #define CPP_BABEL_2018_CORE_HPP
 
 #include <QtWidgets/QStackedWidget>
+#include <memory>
 #include "includes/client/Network/TCPNetwork.hpp"
 #include "includes/client/UI/Login.hpp"
 #include "includes/client/UI/Home.hpp"
 #include "includes/client/UI/Call.hpp"
 #include "includes/client/Settings.hpp"
 
+using namespace std;
+using namespace Babel::UI;
+
 class Core : public QMainWindow {
 Q_OBJECT
 public:
-	Core(Settings const &settings);
-	~Core();
+	explicit Core(Settings const &settings);
+	~Core() override;
 
 public slots:
 	void checkForCall(int);
 
 private:
-	QStackedWidget   *_stackedWidget;
-	Babel::UI::Login *_loginScreen;
-	Babel::UI::Home  *_homeScreen;
-	Babel::UI::Call  *_callScreen;
-	TCPNetwork       *_tcpNetwork;
+	QStackedWidget              *_stackedWidget;
+	Login                       *_loginScreen;
+	Home                        *_homeScreen;
+	Call                        *_callScreen;
+	std::unique_ptr<TCPNetwork> _tcpNetwork;
 };
 
 #endif //CPP_BABEL_2018_CORE_HPP
