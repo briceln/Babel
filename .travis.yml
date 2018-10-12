@@ -1,13 +1,32 @@
-sudo: required
+matrix:
+  include:
+  - os: windows
+    dist: 1803-containers
+  - os: linux
 
-os:
-  - linux
-
-language: cpp
 services:
   - docker
+
 before_install:
-  - docker build -t friendlyhello .
+  - |
+    (
+      if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+        docker build -t friendlyhello .
+      else
+        docker build -t friendlyhello .
+      fi
+    )
   - docker run -itd --name build friendlyhello
+
 script:
-  - docker exec build bash -c "mkdir build && cd build && conan install .. --build portaudio && cmake .. -G \"Unix Makefiles\" && cmake --build ."
+  - |
+    (
+      if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+        docker exec build bash -c "mkdir build && cd build && conan install .. --build portaudio && cmake .. -G "Unix Makefiles" && cmake --build ."
+      else
+        docker exec build bash -c "mkdir build && cd build && conan install .. --build portaudio && cmake .. -G "Unix Makefiles" && cmake --build ."
+      fi
+    )
+
+
+# docker exec build bash -c "mkdir build && cd build && conan install .. && cmake .. -G "Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release && cmake --build . --config Release"
