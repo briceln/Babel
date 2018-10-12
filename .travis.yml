@@ -1,4 +1,9 @@
 sudo: required
+
+os:
+  - windows
+  - linux
+
 language: cpp
 services:
   - docker

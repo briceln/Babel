@@ -37,7 +37,6 @@ RUN wget -q -O /tmp/cmake.tar.gz --no-check-certificate \
 
 # Install conan
 RUN pip3 install conan && conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
-# RUN curl -C - -L -O https://dl.bintray.com/conan/installers/conan-ubuntu-64_1_7_3.deb && dpkg -i conan-ubuntu-64_1_7_3.deb && conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan" && rm conan-ubuntu-64_1_7_3.deb
 
 WORKDIR /build
 
