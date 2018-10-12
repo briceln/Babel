@@ -2,8 +2,6 @@ language: bash
 
 matrix:
   include:
-  - os: windows
-    dist: 1803-containers
   - os: linux
 
 services:
