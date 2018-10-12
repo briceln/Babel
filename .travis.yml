@@ -13,7 +13,7 @@ before_install:
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
-        docker build -t friendlyhello .
+        docker --experimental build -t friendlyhello .
       else
         docker build -t friendlyhello .
       fi
