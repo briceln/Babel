@@ -22,9 +22,9 @@ script:
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
-        docker exec build bash -c "mkdir build && cd build && conan install .. --build portaudio && cmake .. -G "Unix Makefiles" && cmake --build ."
+        docker exec build bash -c "mkdir build && cd build && conan install .. --build portaudio && cmake .. -G "Unix Makefiles" && cmake --build .
       else
-        docker exec build bash -c "mkdir build && cd build && conan install .. --build portaudio && cmake .. -G "Unix Makefiles" && cmake --build ."
+        docker exec build bash -c "mkdir build && cd build && conan install .. --build portaudio && cmake .. -G "Unix Makefiles" && cmake --build .
       fi
     )
 
